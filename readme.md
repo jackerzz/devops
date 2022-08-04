@@ -8,3 +8,6 @@ https://9000-jackerzz-devops-4ylayvxmst9.ws-us59.gitpod.io/documentation/analysi
 
 # 开发环境
 - [sonarqube-Bitnami 打包的 SonarQube](https://hub.docker.com/r/bitnami/sonarqube/)
+
+# zap-基线测试
+docker run -t owasp/zap2docker-stable zap-baseline.py -t http://www.huansi.net/
