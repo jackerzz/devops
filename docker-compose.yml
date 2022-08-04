@@ -1,38 +1,32 @@
-version: '3'
+version: "3"
 
 services:
-
-  drone-server:
-    image: drone/drone:2.3.1
-    ports:
-      - 443:443
-      - 80:80
-    volumes:
-      - drone-data:/data:rw
-      - ./ssl:/etc/certs
-    restart: always
-    environment:
-      - DRONE_SERVER_HOST=${DRONE_SERVER_HOST:-https://drone.yeasy.com}
-      - DRONE_SERVER_PROTO=${DRONE_SERVER_PROTO:-https}
-      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET:-secret}
-      - DRONE_GITHUB_SERVER=https://github.com
-      - DRONE_GITHUB_CLIENT_ID=${DRONE_GITHUB_CLIENT_ID}
-      - DRONE_GITHUB_CLIENT_SECRET=${DRONE_GITHUB_CLIENT_SECRET}
-
-  drone-agent:
-    image: drone/drone-runner-docker:1
-    restart: always
+  sonarqube:
+    image: sonarqube:community
     depends_on:
-      - drone-server
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:rw
+      - db
     environment:
-      - DRONE_RPC_PROTO=http
-      - DRONE_RPC_HOST=drone-server
-      - DRONE_RPC_SECRET=${DRONE_RPC_SECRET:-secret}
-      - DRONE_RUNNER_NAME=${HOSTNAME:-demo}
-      - DRONE_RUNNER_CAPACITY=2
-    dns: 114.114.114.114
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+  db:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
 
 volumes:
-  drone-data:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
+  postgresql_data:
