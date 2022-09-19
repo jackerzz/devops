@@ -5,6 +5,12 @@
 
 - docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
 
+# 
+```shell script
+#构建镜像
+docker build -t ${IMAGE_NAME} .
+```
+
 # 开发环境
 - [sonarqube-Bitnami 打包的 SonarQube](https://hub.docker.com/r/bitnami/sonarqube/)
 

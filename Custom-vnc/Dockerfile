@@ -36,16 +36,17 @@ RUN apt-get -qqy update \
 #=====
 COPY python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb /
 COPY setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar /
+COPY requirements.txt requirements.txt /
 
-RUN tar -zxvf setuptools-51.1.1.tar.tar && tar -zxvf pip-20.3.3.tar.tar 
+RUN tar -zxvf setuptools-51.1.1.tar.tar && tar -zxvf pip-20.3.3.tar.tar
 
 RUN dpkg -i *.deb
-RUN echo $(ls)
-RUN cd setuptools-51.1.1 && python3 setup.py install 
-RUN echo $(ls)
+RUN cd setuptools-51.1.1 && python3 setup.py install
 RUN cd pip-20.3.3 && python3 setup.py install
+RUN pip install -r requirements.txt -i https://pypi.doubanio.com/simple
+RUN rm -rf ~/.cache/pip
 RUN rm -rf python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb
-RUN rm -rf setuptools-51.1.1 pip-20.3.3 setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar
+RUN rm -rf setuptools-51.1.1 pip-20.3.3 setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar requirements.txt pynput-1.7.6.tar.tar
 
 #===================
 # Timezone settings
@@ -104,7 +105,7 @@ RUN apt-get update -qqy \
 # Run the following commands as non-privileged user
 #===================================================
 USER 1200:1201
-
+#RUN pip install pynput -i https://pypi.doubanio.com/simple
 # Boolean value, maps "--bind-host"
 ENV SE_BIND_HOST false
 
