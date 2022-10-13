@@ -1,9 +1,9 @@
 {
     "chrome": {
-        "default": "64.0",
+        "default": "78.0",
         "versions": {
-            "64.0": {
-                "image": "selenoid/vnc:chrome_64.0",
+            "78.0": {
+                "image": "selenoid/vnc:chrome_78.0",
                 "port": "4444",
                 "path": "/",
                 "env": [
@@ -14,33 +14,18 @@
             }
         }
     },
-    "firefox": {
-        "default": "59.0",
-        "versions": {
-            "59.0": {
-                "image": "selenoid/vnc:firefox_59.0",
-                "port": "4444",
-                "path": "/wd/hub"
-            }
-        }
-    },
-    "phantomjs": {
-        "default": "2.1.1",
-        "versions": {
-            "2.1.1": {
-                "image": "selenoid/phantomjs:2.1.1",
-                "port": "4444",
-                "path": "/"
-            }
-        }
-    },
     "android": {
-        "default": "7.0",
+        "default": "6.0",
         "versions": {
-            "7.0": {
-                "image": "selenoid/android:7.0",
+            "6.0": {
+                "image": "selenoid/android:6.0",
                 "port": "4444",
-                "path": "/wd/hub"
+                "path": "/mobile",
+                "env": [
+                    "LANG=ru_RU.UTF-8",
+                    "LANGUAGE=ru:en",
+                    "LC_ALL=ru_RU.UTF-8"
+                ]
             }
         }
     }
