@@ -1,3 +1,11 @@
+# docker 镜像推送到docker hub
+- [docker hub 推送镜像](https://blog.csdn.net/butterfly5211314/article/details/83068807)
+``` 
+$ docker login                                      # 登陆
+$ docker tag first-image  gerrylon/first-image      # 打包镜像
+$ docker push gerrylon/first-image                  # 推送镜像
+```
+
 # gitpod 搭建drone
 
 ## 参考地址： https://yeasy.gitbook.io/docker_practice/ci/drone/install
