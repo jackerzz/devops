@@ -2,8 +2,8 @@
 - [docker hub 推送镜像](https://blog.csdn.net/butterfly5211314/article/details/83068807)
 ``` 
 $ docker login                                      # 登陆
-$ docker tag first-image  gerrylon/first-image      # 打包镜像
-$ docker push gerrylon/first-image                  # 推送镜像
+$ docker tag agiletc:v1  erlancode/agiletc:v1     # 打包镜像
+$ docker push erlancode/agiletc:v1                  # 推送镜像
 ```
 
 # gitpod 搭建drone
@@ -35,3 +35,19 @@ docker run -t owasp/zap2docker-stable zap-baseline.py -t http://www.huansi.net/
 # 低代码引擎
 - [demo-crm](https://github.com/YaoApp/demo-crm)
 - [yao-wms](https://github.com/YaoApp/yao-wms)
+
+
+# java 打包jar 
+```bash
+mvn package
+```
+
+# 打包images
+```bash
+docker build -t agiletc:v1 .
+```
+
+# 运行
+```
+docker run -d -p 8089:8094 --name case_server   agiletc:v1
+```
