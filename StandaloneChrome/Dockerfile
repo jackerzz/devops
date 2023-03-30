@@ -3,14 +3,13 @@
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 FROM selenium/node-chrome:4.3.0-20220726
-LABEL authors=SeleniumHQ
 
 # USER 1200
 USER root
 #=====
 # python3 pip  setuptools
 #=====
-RUN apt update && apt install python3-evdev -y
+RUN apt update && apt install python3-evdev git -y 
 
 COPY python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb /
 COPY setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar /
@@ -42,7 +41,7 @@ COPY generate_config /opt/bin/generate_config
 RUN apt autoclean &&  apt autoremove
 # Boolean value, maps "--relax-checks"
 ENV SE_RELAX_CHECKS true
-
+COPY output.png /usr/share/backgrouds
 EXPOSE 4444
 
 
