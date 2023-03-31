@@ -5,6 +5,9 @@ $ docker login                                      # 登陆
 $ docker tag agiletc:v1  erlancode/agiletc:v1     # 打包镜像
 $ docker push erlancode/agiletc:v1                  # 推送镜像
 ```
+# docker tag selenium_vnc:v7 erlancode/selenium_vnc:v7
+# docker push erlancode/selenium_vnc:v7
+# docker system prune -a
 
 # gitpod 搭建drone
 

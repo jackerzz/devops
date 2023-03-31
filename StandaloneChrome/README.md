@@ -6,9 +6,11 @@ apt autoclean &&  apt autoremove
 secret
 
 # 打包
-docker build -t selenium_vnc:v1 .
+docker build -t selenium_vnc:v5 .
 
 # 运行
-docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g"  erlancode/seleniuebase:v1
+docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g"  test:v1
 
-docker run -d -p 4444:4444 -p 7900:7900 --shm-size="2g"  selenoid/vnc_chrome:111.0
+docker run -d -p 8888:8888 -p 7900:7900 --shm-size="2g"  selenoid/vnc_chrome:111.0
+
+docker run -d -p 8888:8090 -p 7900:7900 selenium_vnc:v7

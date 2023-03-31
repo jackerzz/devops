@@ -9,7 +9,7 @@ USER root
 #=====
 # python3 pip  setuptools
 #=====
-RUN apt update && apt install python3-evdev git -y 
+RUN apt update && apt install python3-evdev git vim -y 
 
 COPY python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb /
 COPY setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar /
@@ -20,8 +20,8 @@ RUN tar -zxvf setuptools-51.1.1.tar.tar && tar -zxvf pip-20.3.3.tar.tar
 RUN dpkg -i *.deb
 RUN cd setuptools-51.1.1 && python3 setup.py install
 RUN cd pip-20.3.3 && python3 setup.py install
-
-RUN pip install -r requirements.txt -i https://pypi.doubanio.com/simple
+RUN pip install jupyterlab
+RUN pip install -r requirements.txt
 
 RUN rm -rf ~/.cache/pip
 RUN rm -rf python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb
@@ -35,6 +35,7 @@ COPY start-selenium-standalone.sh /opt/bin/start-selenium-standalone.sh
 # Supervisor configuration file
 #==============================
 COPY selenium.conf /etc/supervisor/conf.d/
+COPY jupyter_notebook_config.py /
 
 # Copying configuration script generator
 COPY generate_config /opt/bin/generate_config
