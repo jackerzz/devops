@@ -2,7 +2,8 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM selenium/node-chrome:4.3.0-20220726
+# FROM selenium/node-chrome:4.3.0-20220726
+FROM selenium/node-chrome:latest
 
 # USER 1200
 USER root
@@ -23,7 +24,7 @@ RUN cd pip-20.3.3 && python3 setup.py install
 RUN pip install jupyterlab
 RUN pip install -r requirements.txt
 
-RUN rm -rf ~/.cache/pip
+RUN sudo rm -rf ~/.cache/pip
 RUN rm -rf python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb
 RUN rm -rf setuptools-51.1.1 pip-20.3.3 setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar requirements.txt
 #====================================
@@ -37,12 +38,17 @@ COPY start-selenium-standalone.sh /opt/bin/start-selenium-standalone.sh
 COPY selenium.conf /etc/supervisor/conf.d/
 COPY jupyter_notebook_config.py /
 
+COPY robotlibcore.py /usr/local/lib/python3.8/dist-packages
+COPY SeleniumLibrary.zip /usr/local/lib/python3.8/dist-packages
+RUN  cd /usr/local/lib/python3.8/dist-packages && unzip SeleniumLibrary.zip && rm -rf SeleniumLibrary.zip
+COPY 代码拉取.ipynb /home/seluser
+
 # Copying configuration script generator
 COPY generate_config /opt/bin/generate_config
 RUN apt autoclean &&  apt autoremove
 # Boolean value, maps "--relax-checks"
 ENV SE_RELAX_CHECKS true
-COPY output.png /usr/share/backgrouds
-EXPOSE 4444
+RUN x11vnc -storepasswd password /home/seluser/.vnc/passwd
+# EXPOSE 4444
 
 

@@ -1,5 +1,5 @@
+# FROM ubuntu:focal-20220531
 FROM ubuntu:focal-20220531
-LABEL authors="Selenium <selenium-developers@googlegroups.com>"
 USER root
 #================================================
 # Customize sources for apt-get
@@ -109,5 +109,4 @@ USER 1200:1201
 # Boolean value, maps "--bind-host"
 ENV SE_BIND_HOST false
 
-EXPOSE 5900
 CMD ["/opt/bin/entry_point.sh"]

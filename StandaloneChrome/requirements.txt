@@ -1,7 +1,7 @@
 robotframework==5.0
 robotframework-requests==0.9.3
 robotframework-databaselibrary
-robotframework-seleniumlibrary
+# robotframework-seleniumlibrary
 pytz==2022.1
 airtest==1.2.6
 selenium==3.141.0
