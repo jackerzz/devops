@@ -24,7 +24,7 @@ RUN cd pip-20.3.3 && python3 setup.py install
 RUN pip install jupyterlab
 RUN pip install -r requirements.txt
 
-RUN sudo rm -rf ~/.cache/pip
+RUN sudo rm -rf ~/.cache/pip /home/seluser/.cache/pip
 RUN rm -rf python3-distutils_3.8.2-1ubuntu1_all.deb python3-lib2to3_3.8.2-1ubuntu1_all.deb
 RUN rm -rf setuptools-51.1.1 pip-20.3.3 setuptools-51.1.1.tar.tar pip-20.3.3.tar.tar requirements.txt
 #====================================
@@ -45,6 +45,10 @@ COPY 代码拉取.ipynb /home/seluser
 
 # Copying configuration script generator
 COPY generate_config /opt/bin/generate_config
+
+# selenium/node-chrome:latest 时使用
+RUN apt install python3-tk python3-dev -y
+
 RUN apt autoclean &&  apt autoremove
 # Boolean value, maps "--relax-checks"
 ENV SE_RELAX_CHECKS true
