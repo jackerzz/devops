@@ -2,11 +2,13 @@
 - [docker hub 推送镜像](https://blog.csdn.net/butterfly5211314/article/details/83068807)
 ``` 
 $ docker login                                      # 登陆
-$ docker tag agiletc:v1  erlancode/agiletc:v1     # 打包镜像
+$ docker tag agiletc:v2  erlancode/agiletc:v2     # 打包镜像
 $ docker push erlancode/agiletc:v1                  # 推送镜像
 ```
-# docker tag selenium_vnc:v8 erlancode/selenium_vnc:v8
-# docker push erlancode/selenium_vnc:v8
+
+# docker tag selenium_vnc:v10 erlancode/selenium_vnc:v10
+# docker tag selenium:v2 erlancode/selenium:v2
+# docker push erlancode/selenium:v2
 # docker system prune -a
 
 # gitpod 搭建drone
@@ -15,7 +17,7 @@ $ docker push erlancode/agiletc:v1                  # 推送镜像
 - docker run -u zap -p 8080:8080 -p 8090:8090 -i owasp/zap2docker-stable zap-webswing.sh
 
 - docker run -d --name sonarqube -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true -p 9000:9000 sonarqube:latest
-
+VJ*+Wr(jV$/f)#6
 # 
 ```shell script
 #构建镜像
@@ -48,9 +50,12 @@ mvn package
 # 打包images
 ```bash
 docker build -t agiletc:v1 .
+docker build -t ocr:v1 .
+
 ```
 
 # 运行
 ```
 docker run -d -p 8089:8094 --name case_server   agiletc:v1
+docker run -d -p 9998:9998 --name ocr ocr:v1
 ```
