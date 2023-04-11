@@ -1,0 +1,27 @@
+# paddlenlp==2.0.1
+# paddlehub==2.0.4
+paddlepaddle==2.2.2
+# tb-paddle==0.3.6
+# shapely
+# scikit-image
+# imgaug
+# pyclipper
+# lmdb
+# tqdm
+# numba==0.48.0
+# numpy==1.21.6
+# visualdl
+# rapidfuzz
+# opencv-python==4.6.0.66
+# opencv-contrib-python==4.6.0.66
+# cython
+# lxml
+# premailer
+# openpyxl
+# attrdict
+# Polygon3
+# lanms-neo==1.0.2
+# PyMuPDF<1.21.0
+# Cython==0.29
+# opencv-python==4.1.1.26
+
