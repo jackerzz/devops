@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      affinity:
+        podAntiAffinity:
+        # 配置AntiAffinity
+          topologyKey: kubernetes.io/hostname
+      containers:
+      # 配置主备模式
+      - name: postgres
+        image: postgres:12
+        env:
+        - name: REPLICATION_MODE
+          value: "primary"
+        - name: REPLICATION_MODE  
+          value: "standby"
+        - name: REPLICATION_HOST
+          value: "postgres"
+        - name: REPLICATION_PRIMARY_HOST
+          value: "${STANDBY_POD_NAME}" 
+        ports:
+        - containerPort: 5432
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres-${ordinal}
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "nfs"
+      resources:
+        requests:
+        # kubectl apply -f postgres.yaml --overrides='spec.volumeClaimTemplates[0].spec.resources.requests.storage=10Gi'
+          storage: ${STORAGE_SIZE}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  clusterIP: None
+  selector:
+    app: postgres
+---
+apiVersion: v1
+kind: Endpoints  
+metadata:
+  name: postgres
+subsets:
+- addresses:
+  - ip: ${POD_IP}
+  ports:
+  - port: 5432
+---
+- job_name: 'postgres' 
+  static_configs:
+  - targets: ['postgres:5432']
+- alert: PostgresInstanceDown
+  expr: pg_up{job="postgres"} == 0
+  for: 1m
+  labels:
+    severity: critical

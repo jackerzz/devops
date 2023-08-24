@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+
+  pg-master-1:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=repluser
+      - POSTGRES_PASSWORD=replpass
+      - REPLICATION_PRIMARY=true
+    volumes:
+      - pgdata1:/var/lib/postgresql/data
+    networks:
+      - pg-overlay-network
+    ports:
+      - 5432:5432
+
+  pg-master-2:  
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=repluser
+      - POSTGRES_PASSWORD=replpass
+      - REPLICATION_PRIMARY=true
+    volumes:
+     - pgdata3:/var/lib/postgresql/data  
+    networks:
+      - pg-overlay-network
+    ports:
+      - 5433:5432
+
+  pg-slave-1:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=repluser
+      - POSTGRES_PASSWORD=replpass
+      - REPLICATION_MODE=slave
+      - REPLICATION_HOST=pg-master-1
+      - REPLICATION_PRIMARY_CONNINFO=host=pg-master-1 port=5432
+    volumes:
+      - pgdata2:/var/lib/postgresql/data
+    depends_on:
+      - pg-master-1
+    networks:
+     - pg-overlay-network
+
+  pg-slave-2:
+    image: postgres:12
+    environment:
+      - POSTGRES_USER=repluser
+      - POSTGRES_PASSWORD=replpass
+      - REPLICATION_MODE=slave 
+      - REPLICATION_HOST=pg-master-2
+      - REPLICATION_PRIMARY_CONNINFO=host=pg-master-2 port=5432 
+    volumes:
+      - pgdata4:/var/lib/postgresql/data
+    depends_on:
+      - pg-master-2
+    networks:
+      - pg-overlay-network  
+
+  pg-monitor:
+    image: postgres-monitor:latest
+    # // 监控配置  
+
+  pg-backup: 
+    image: postgres-backup:latest  
+    # // 备份配置
+
+volumes:
+
+  pgdata1:
+  pgdata2:  
+  pgdata3:
+  pgdata4:
+
+networks:
+  
+  pg-overlay-network:
+    driver: overlay

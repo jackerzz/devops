@@ -1,0 +1,39 @@
+# postgres.yaml
+
+apiVersion: apps/v1
+kind: StatefulSet  
+metadata:
+  name: postgres 
+spec:
+  serviceName: postgres
+  replicas: 2
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      affinity:
+        podAntiAffinity: 
+          // 配置anti-affinity
+      containers:
+      - name: postgres
+        env:
+        - name: REPLICATION_MODE
+          value: "primary" 
+        - name: REPLICATION_MODE  
+          value: "standby"
+        - name: REPLICATION_HOST
+          value: "postgres"
+        - name: REPLICATION_PRIMARY_HOST
+          value: "postgres"
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres-${ordinal}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: postgres

@@ -1,0 +1,17 @@
+# postgres-monitor.yaml
+
+- job_name: 'postgres'
+
+  static_configs:
+
+  - targets: ['postgres:5432']
+
+- alert: PostgresInstanceDown
+
+  expr: pg_up{job="postgres"} == 0
+
+  for: 1m
+
+  labels:
+
+    severity: critical
