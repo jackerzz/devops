@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+spec:
+  serviceName: redis
+  replicas: 3
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      initContainers:
+      - image: erlancode/redis-cluser:v1
+        name: conf
+        command: ["cp","/redis/redis.sh","/redis/redis.conf","/redis/sentinel.conf","/conf"]
+        volumeMounts:
+        - mountPath: /conf
+          name: redis-conf
+      containers:
+      - name: redis
+        image: redis
+        volumeMounts:
+        - mountPath: /usr/local/etc/redis
+          name: redis-conf
+        command: ["sh","/usr/local/etc/redis/redis.sh"]
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        ports:
+        - containerPort: 6379
+          name: redis
+      volumes:
+      - name: redis-conf
+        nfs:
+          server: 10.150.150.103
+          path: "/redis"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  labels:
+    app: redis
+spec:
+  selector:
+    app: redis
+  clusterIP: None                  # Headless Service
+  ports:
+  - name: redis
+    port: 7790
